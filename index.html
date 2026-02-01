@@ -25,12 +25,31 @@
     }
 
 header {
-  display: flex;
-  align-items: flex-start; /* vertical top */
-  justify-content: flex-start; /* horizontal left */
-  padding: 10px; /* adjust spacing if needed */
+  position: relative;
+  height: 60px; /* adjust as needed */
   background: linear-gradient(90deg, var(--accent), var(--accent2));
+  display: flex;
+  align-items: center; /* vertically center logo and heading */
+  padding: 0 16px;
+  color: #fff;
 }
+
+header .logo {
+  height: 42px;
+  position: absolute; /* pinned top-left */
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 900;
+  text-align: center;
+  width: 100%;
+}
+
 
 
     /* ===== HORIZONTAL SWIPE ===== */
@@ -187,6 +206,7 @@ header {
 
 <header>
   <img src="logo.png" alt="EIF Logo" style="height:42px;">
+  <h1>EMS Sports Tournament</h1>
 </header>
 
 
