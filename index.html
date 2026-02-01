@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>EIF Sports Tournament</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    :root {
+      --bg: #120c05;
+      --accent: #f59e0b;
+      --accent2: #fb923c;
+      --card: #1f140a;
+      --muted: #c9b8a6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(160deg, var(--bg), #000);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+header {
+  display: flex;
+  align-items: flex-start; /* vertical top */
+  justify-content: flex-start; /* horizontal left */
+  padding: 10px; /* adjust spacing if needed */
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+}
+
+
+    /* ===== HORIZONTAL SWIPE ===== */
+    .slider {
+      display: flex;
+      width: 400vw;
+      transition: transform 0.45s ease;
+    }
+
+    .sport {
+      width: 100vw;
+      min-height: calc(100vh - 72px);
+      padding: 16px;
+    }
+
+    h2 {
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .live {
+      color: #22c55e;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .score {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .muted { color: var(--muted); font-size: 13px; }
+
+    .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.08);
+      margin: 12px 0;
+    }
+
+    /* ===== PROBABILITY BAR ===== */
+    .prob {
+      margin-top: 10px;
+    }
+
+    .bar {
+      height: 8px;
+      background: #3f2a14;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .fill {
+      height: 100%;
+      width: 89%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+
+    /* ===== SCORECARD ===== */
+    .table {
+      width: 100%;
+      font-size: 13px;
+      border-collapse: collapse;
+    }
+
+    .table th, .table td {
+      padding: 6px 4px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-align: right;
+    }
+
+    .table th:first-child, .table td:first-child { text-align: left; }
+
+        /* ===== FLIP COUNTDOWN (COMING SOON STYLE) ===== */
+    .flip {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .flip-unit {
+      background: linear-gradient(180deg, #2a2a2a, #000);
+      border-radius: 12px;
+      padding: 14px 12px 10px;
+      min-width: 70px;
+      box-shadow: inset 0 -3px 0 rgba(0,0,0,0.6);
+      text-align: center;
+    }
+
+    .flip-num {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .flip-label {
+      margin-top: 6px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      color: var(--accent);
+      opacity: 0.85;
+    }
+
+    .hint {
+      text-align: center;
+      font-size: 12px;
+      opacity: 0.5;
+      margin: 8px 0 12px;
+    }
+
+    /* ===== GOAL ANIMATION (FOOTBALL ONLY) ===== */
+    .goal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--accent2);
+      z-index: 10;
+      animation: flash 1s forwards;
+    }
+
+    @keyframes flash {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="logo.png" alt="EIF Logo" style="height:42px;">
+</header>
+
+
+<div class="slider" id="slider">
+
+    <!-- DODGEBALL -->
+  <section class="sport">
+    <h2>🤾 Dodgeball</h2>
+    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
+
+    <!-- COUNTDOWN ONLY -->
+    <div class="flip" data-start="2026-02-02T12:45:00"></div>
+
+        <!-- UPCOMING MATCHES -->
+    <div class="card">
+      <strong>Upcoming Matches</strong>
+      <div class="divider"></div>
+
+      <div class="card" style="margin-bottom:10px">
+        <div class="row">
+          <strong>Team1</strong>
+          <span class="muted">vs</span>
+          <strong>Team2</strong>
+        </div>
+        <div class="muted">02 Feb • 12:45 • Court A</div>
+      </div>
+
+      <div class="card" style="margin-bottom:10px">
+        <div class="row">
+          <strong>Team3</strong>
+          <span class="muted">vs</span>
+          <strong>Team4</strong>
+        </div>
+        <div class="muted">02 Feb • 12:45 • Court A</div>
+      </div>
+
+      <div class="card" style="margin-bottom:10px">
+        <div class="row">
+          <strong>Team1</strong>
+          <span class="muted">vs</span>
+          <strong>Team4</strong>
+        </div>
+        <div class="muted">02 Feb • 13:10 • Court A</div>
+      </div>
+
+      <div class="card">
+        <div class="row">
+          <strong>Team2</strong>
+          <span class="muted">vs</span>
+          <strong>Team3</strong>
+        </div>
+        <div class="muted">02 Feb • 13:10 • Court A</div>
+      </div>
+    </div>
+
+    <!-- PREVIOUS MATCHES -->
+    <div class="card">
+      <strong>Previous Matches</strong>
+      <div class="divider"></div>
+      <div class="muted" style="text-align:center">No matches played yet</div>
+    </div>
+  </section>
+
+  <!-- CRICKET -->
+  <section class="sport">
+    <h2>🏏 Cricket <span class="live">LIVE</span></h2>
+    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div> <span class="live">LIVE</span></h2>
+
+    <div class="card">
+      <div class="row">
+        <div><strong>Sri Lanka</strong></div>
+        <div class="muted">189/5 (20)</div>
+      </div>
+      <div class="row">
+        <div><strong>England</strong></div>
+        <div class="score">124/3</div>
+      </div>
+      <div class="muted">Target: 168 • Overs: 12.1/17</div>
+      <div class="divider"></div>
+      <div class="muted">ENG need 44 runs in 29 balls • CRR 10.19 • RRR 9.10</div>
+    </div>
+  </section>
+
+  <!-- BASKETBALL -->
+  <section class="sport">
+    <h2>🏀 Basketball</h2>
+    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
+    <div class="card">
+      <div class="score">58 – 54</div>
+      <div class="muted">Q4 • 06:12</div>
+    </div>
+    <div class="flip" data-start="2026-02-03T21:00:00"></div>
+  </section>
+
+  <!-- FOOTBALL -->
+  <section class="sport">
+    <h2>⚽ Football <span class="live">LIVE</span></h2>
+    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div> <span class="live">LIVE</span></h2>
+    <div class="card">
+      <div class="score">2 – 1</div>
+      <div class="muted">EIF FC vs Thunder United • 67'</div>
+    </div>
+  </section>
+
+</div>
+
+<div class="hint">Swipe → to change sport</div>
+
+<script>
+/**********************
+ FLIP COUNTDOWN LOGIC
+ **********************/
+function initCountdowns() {
+  document.querySelectorAll('.flip').forEach(el => {
+    const start = new Date(el.dataset.start).getTime();
+
+    function tick() {
+      const now = Date.now();
+      let diff = Math.max(0, start - now);
+
+      const days = Math.floor(diff / 86400000);
+      diff %= 86400000;
+      const hrs = Math.floor(diff / 3600000);
+      diff %= 3600000;
+      const mins = Math.floor(diff / 60000);
+      const secs = Math.floor((diff % 60000) / 1000);
+
+      el.innerHTML = `
+        <div class="flip-unit"><div class="flip-num">${String(days).padStart(2,'0')}</div><div class="flip-label">DAYS</div></div>
+        <div class="flip-unit"><div class="flip-num">${String(hrs).padStart(2,'0')}</div><div class="flip-label">HOURS</div></div>
+        <div class="flip-unit"><div class="flip-num">${String(mins).padStart(2,'0')}</div><div class="flip-label">MINUTES</div></div>
+        <div class="flip-unit"><div class="flip-num">${String(secs).padStart(2,'0')}</div><div class="flip-label">SECONDS</div></div>
+      `;
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  });
+}
+
+initCountdowns();
+
+/**********************
+ SWIPE NAVIGATION
+ **********************/
+let index = 0;
+let startX = 0;
+const slider = document.getElementById('slider');
+
+document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
+document.addEventListener('touchend', e => {
+  const diff = e.changedTouches[0].clientX - startX;
+  if (diff < -50) index++;
+  if (diff > 50) index--;
+  index = (index + 4) % 4;
+  slider.style.transform = `translateX(-${index * 100}vw)`;
+});
+
+/**********************
+ FOOTBALL GOAL EVENT
+ **********************/
+function showGoal() {
+  const g = document.createElement('div');
+  g.className = 'goal';
+  g.textContent = 'GOAL!';
+  document.body.appendChild(g);
+  setTimeout(() => g.remove(), 1000);
+}
+</script>
+
+</body>
+</html>
