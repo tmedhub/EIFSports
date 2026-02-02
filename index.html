@@ -41,7 +41,7 @@ header h1 {
 header .logo {
   position: absolute;
   left: 16px;
-  height: 32px;
+  height: 22px;
 }
 .slider {
   display: flex;
@@ -208,12 +208,12 @@ document.addEventListener('touchend', e => {
 });
 
 function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  const headers = lines.shift().split(',').map(h => h.trim());
-  return lines.map(l => {
-    const v = l.split(',');
+  const rows = text.replace(/\r/g,'').trim().split('\n')
+    .map(r => r.split(',').map(c => c.replace(/^"|"$/g,'').trim()));
+  const headers = rows.shift().map(h => h.replace(/^\uFEFF/,'').toLowerCase());
+  return rows.map(r => {
     let o = {};
-    headers.forEach((h,i)=>o[h]=v[i]?.trim()||'');
+    headers.forEach((h,i)=>o[h]=r[i]||'');
     return o;
   });
 }
@@ -231,10 +231,11 @@ async function loadSportMatches(s) {
   const c = document.querySelector(s.selector);
   const up = c.querySelector('.upcoming-matches');
   const prev = c.querySelector('.previous-matches');
-  up.innerHTML = '<strong>Upcoming Matches</strong><div class="divider"></div>';
-  prev.innerHTML = '<strong>Previous Matches</strong><div class="divider"></div>';
-
   const now = new Date();
+
+  const liveCards = [];
+  const upcomingCards = [];
+  const previousCards = [];
 
   data.forEach(m => {
     const matchDate = new Date(`${m.date}T${m.time}:00`);
@@ -255,9 +256,24 @@ async function loadSportMatches(s) {
         ${m.winner ? `<div class="muted">Winner: ${m.winner}</div>` : ''}
       </div>`;
 
-    if (m.winner) prev.innerHTML += card;
-    else up.innerHTML += card;
+    if (cls === 'live') liveCards.push(card);
+    else if (cls === 'previous') previousCards.push(card);
+    else upcomingCards.push(card);
   });
+
+  let html = '';
+  if (liveCards.length) {
+    html += '<strong>LIVE Matches</strong><div class="divider"></div>';
+    html += liveCards.join('');
+    html += '<div class="divider"></div>';
+  }
+  html += '<strong>Upcoming Matches</strong><div class="divider"></div>';
+  html += upcomingCards.join('');
+  up.innerHTML = html;
+
+  prev.innerHTML =
+    '<strong>Previous Matches</strong><div class="divider"></div>' +
+    previousCards.join('');
 }
 
 sportsData.forEach(loadSportMatches);
