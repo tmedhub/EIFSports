@@ -51,9 +51,11 @@ h2 {
   font-size: 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center; /* center horizontally */
   margin-bottom: 12px;
+  color: #000; /* black text */
 }
+
 .live { color: #22c55e; font-size: 13px; font-weight: 700; }
 .card {
   background: var(--card);
@@ -246,13 +248,13 @@ async function loadSportMatches(sport){
     container.innerHTML+=data.map(m=>`
       <div class="card" style="margin-bottom:10px">
         <div class="row">
-          <strong>${m['Team 1']}</strong>
-          <span class="muted">vs</span>
-          <strong>${m['Team 2']}</strong>
-        </div>
-        <div class="muted">${m['Date']} • ${m['Time']} • ${m['Location']}</div>
-      </div>
-    `).join('');
+      <strong>${m['team_a']}</strong>
+      <span class="muted">vs</span>
+      <strong>${m['team_b']}</strong>
+    </div>
+    <div class="muted">${m['date']} • ${m['time']} • ${m['location']}</div>
+  </div>
+`).join('');
   }catch(err){
     console.error(`Failed to load ${sport.name}:`,err);
   }
