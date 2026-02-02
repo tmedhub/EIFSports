@@ -3,282 +3,157 @@
 <head>
 <meta charset="UTF-8">
 <title>EMS Sports Tournament</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 :root {
-  --bg: #120c05;
-  --card: #1f140a;
-  --muted: #c9b8a6;
-  --live: #22c55e;
+  --bg:#120c05;
+  --card:#1f140a;
+  --muted:#c9b8a6;
+  --live:#22c55e;
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: linear-gradient(160deg, var(--bg), #000);
-  color: #fff;
-  overflow-x: hidden;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui;
+  background:linear-gradient(160deg,var(--bg),#000);
+  color:#fff;
 }
-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  height: 60px;
-  padding: 0 16px;
-  background: linear-gradient(90deg, #f59e0b, #fb923c);
+header{
+  height:60px;
+  background:linear-gradient(90deg,#f59e0b,#fb923c);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
 }
-header h1 {
-  color: #000;
-  font-weight: 900;
-  font-size: 18px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
+header h1{
+  color:#000;
+  font-size:18px;
+  font-weight:900;
 }
-header .logo {
-  position: absolute;
-  left: 16px;
-  height: 22px;
+header .logo{
+  position:absolute;
+  left:16px;
+  height:20px;
 }
-.slider {
-  display: flex;
-  width: 400vw;
-  transition: transform 0.45s ease;
+.slider{display:flex;width:400vw;transition:.45s}
+.sport{width:100vw;padding:16px;overflow-y:auto}
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
 }
-.sport {
-  width: 100vw;
-  min-height: calc(100vh - 60px);
-  padding: 16px;
-  overflow-y: auto;
+.card.previous{opacity:.55}
+.card.live{border-left:4px solid var(--live)}
+.live-text{color:var(--live);font-size:12px;font-weight:700;margin-left:6px}
+.muted{color:var(--muted);font-size:13px}
+.divider{height:1px;background:rgba(255,255,255,.08);margin:12px 0}
+.flip{display:flex;justify-content:center;gap:12px;margin:16px 0}
+.flip-unit{
+  background:#000;
+  border-radius:12px;
+  padding:12px;
+  min-width:60px;
+  text-align:center;
 }
-h2 {
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.card {
-  background: var(--card);
-  border-radius: 14px;
-  padding: 14px;
-  margin-bottom: 12px;
-}
-.card.previous { opacity: 0.55; }
-.card.live { border-left: 4px solid var(--live); }
-.live-text {
-  color: var(--live);
-  font-size: 12px;
-  font-weight: 700;
-  margin-left: 6px;
-}
-.muted { color: var(--muted); font-size: 13px; margin-top: 4px; }
-.divider { height: 1px; background: rgba(255,255,255,0.08); margin: 12px 0; }
-.flip {
-  display: flex;
-  justify-content: center;
-  gap: 12px;
-  margin-top: 18px;
-}
-.flip-unit {
-  background: linear-gradient(180deg, #2a2a2a, #000);
-  border-radius: 12px;
-  padding: 14px 12px 10px;
-  min-width: 60px;
-  text-align: center;
-}
-.flip-num {
-  font-size: 28px;
-  font-weight: 900;
-  color: #f59e0b;
-}
-.flip-label {
-  margin-top: 6px;
-  font-size: 11px;
-  letter-spacing: 1px;
-  color: #f59e0b;
-}
-.hint {
-  text-align: center;
-  font-size: 12px;
-  opacity: 0.5;
-  margin: 8px 0 12px;
-}
-.goal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48px;
-  font-weight: 900;
-  color: #fb923c;
-  z-index: 10;
-  animation: flash 1s forwards;
-}
-@keyframes flash {
-  0% { opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { opacity: 0; }
-}
+.flip-num{font-size:26px;font-weight:900;color:#f59e0b}
+.flip-label{font-size:11px;color:#f59e0b}
 </style>
 </head>
 <body>
 
 <header>
-  <img src="logo.png" alt="EMS Logo" class="logo">
+  <img src="logo.png" class="logo">
   <h1>EMS Sports Tournament</h1>
 </header>
 
 <div class="slider" id="slider">
-
-  <section class="sport">
-    <h2>🤾 Dodgeball</h2>
-    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
-    <div class="flip" data-start="2026-02-02T12:45:00"></div>
-    <div class="upcoming-matches"></div>
-    <div class="previous-matches" style="margin-top:16px;"></div>
-  </section>
-
-  <section class="sport">
-    <h2>🏏 Cricket</h2>
-    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
-    <div class="flip" data-start="2026-02-02T12:45:00"></div>
-    <div class="upcoming-matches"></div>
-    <div class="previous-matches" style="margin-top:16px;"></div>
-  </section>
-
-  <section class="sport">
-    <h2>🏀 Basketball</h2>
-    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
-    <div class="flip" data-start="2026-02-03T21:00:00"></div>
-    <div class="upcoming-matches"></div>
-    <div class="previous-matches" style="margin-top:16px;"></div>
-  </section>
-
-  <section class="sport">
-    <h2>⚽ Football</h2>
-    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
-    <div class="flip" data-start="2026-02-03T15:00:00"></div>
-    <div class="upcoming-matches"></div>
-    <div class="previous-matches" style="margin-top:16px;"></div>
-  </section>
-
+  <section class="sport"><h2>🤾 Dodgeball</h2><div class="flip" data-start="2026-02-02T12:45"></div><div class="upcoming-matches"></div><div class="previous-matches"></div></section>
+  <section class="sport"><h2>🏏 Cricket</h2><div class="flip" data-start="2026-02-02T12:45"></div><div class="upcoming-matches"></div><div class="previous-matches"></div></section>
+  <section class="sport"><h2>🏀 Basketball</h2><div class="flip" data-start="2026-02-03T21:00"></div><div class="upcoming-matches"></div><div class="previous-matches"></div></section>
+  <section class="sport"><h2>⚽ Football</h2><div class="flip" data-start="2026-02-03T15:00"></div><div class="upcoming-matches"></div><div class="previous-matches"></div></section>
 </div>
 
-<div class="hint">Swipe → to change sport</div>
-
 <script>
-function initCountdowns() {
-  document.querySelectorAll('.flip').forEach(el => {
-    const start = new Date(el.dataset.start).getTime();
-    function tick() {
-      let diff = Math.max(0, start - Date.now());
-      const d = Math.floor(diff / 86400000);
-      diff %= 86400000;
-      const h = Math.floor(diff / 3600000);
-      diff %= 3600000;
-      const m = Math.floor(diff / 60000);
-      const s = Math.floor((diff % 60000) / 1000);
-      el.innerHTML = `
-        <div class="flip-unit"><div class="flip-num">${String(d).padStart(2,'0')}</div><div class="flip-label">DAYS</div></div>
-        <div class="flip-unit"><div class="flip-num">${String(h).padStart(2,'0')}</div><div class="flip-label">HOURS</div></div>
-        <div class="flip-unit"><div class="flip-num">${String(m).padStart(2,'0')}</div><div class="flip-label">MINUTES</div></div>
-        <div class="flip-unit"><div class="flip-num">${String(s).padStart(2,'0')}</div><div class="flip-label">SECONDS</div></div>`;
-    }
-    tick();
-    setInterval(tick, 1000);
-  });
-}
-initCountdowns();
-
-let index = 0, startX = 0;
-const slider = document.getElementById('slider');
-document.addEventListener('touchstart', e => startX = e.touches[0].clientX);
-document.addEventListener('touchend', e => {
-  const diff = e.changedTouches[0].clientX - startX;
-  if (diff < -50) index++;
-  if (diff > 50) index--;
-  index = Math.max(0, Math.min(index, 3));
-  slider.style.transform = `translateX(-${index * 100}vw)`;
+/* countdown unchanged */
+document.querySelectorAll('.flip').forEach(el=>{
+  const start=new Date(el.dataset.start).getTime();
+  setInterval(()=>{
+    let d=Math.max(0,start-Date.now());
+    const D=Math.floor(d/86400000);d%=86400000;
+    const H=Math.floor(d/3600000);d%=3600000;
+    const M=Math.floor(d/60000);
+    const S=Math.floor(d%60000/1000);
+    el.innerHTML=`
+      <div class="flip-unit"><div class="flip-num">${String(D).padStart(2,'0')}</div><div class="flip-label">DAYS</div></div>
+      <div class="flip-unit"><div class="flip-num">${String(H).padStart(2,'0')}</div><div class="flip-label">HOURS</div></div>
+      <div class="flip-unit"><div class="flip-num">${String(M).padStart(2,'0')}</div><div class="flip-label">MINUTES</div></div>
+      <div class="flip-unit"><div class="flip-num">${String(S).padStart(2,'0')}</div><div class="flip-label">SECONDS</div></div>`;
+  },1000);
 });
 
-function parseCSV(text) {
-  const rows = text.replace(/\r/g,'').trim().split('\n')
-    .map(r => r.split(',').map(c => c.replace(/^"|"$/g,'').trim()));
-  const headers = rows.shift().map(h => h.replace(/^\uFEFF/,'').toLowerCase());
-  return rows.map(r => {
-    let o = {};
-    headers.forEach((h,i)=>o[h]=r[i]||'');
+/* 🔥 FIXED CSV PARSER (BOM SAFE) */
+function parseCSV(text){
+  text = text.replace(/^\uFEFF/, ''); // remove BOM
+  const lines = text.trim().split('\n');
+  const headers = lines.shift().split(',').map(h=>h.trim());
+  return lines.map(l=>{
+    const v=l.split(',');
+    const o={};
+    headers.forEach((h,i)=>o[h]=v[i]?.trim()||'');
     return o;
   });
 }
 
-const sportsData = [
-  { selector:'.sport:nth-of-type(1)', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=0&single=true&output=csv' },
-  { selector:'.sport:nth-of-type(2)', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=513380808&single=true&output=csv' },
-  { selector:'.sport:nth-of-type(3)', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=1100929575&single=true&output=csv' },
-  { selector:'.sport:nth-of-type(4)', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=180472724&single=true&output=csv' }
+const sportsData=[
+  {sel:'.sport:nth-of-type(1)',url:'DODGEBALL_SHEET_CSV_URL'},
+  {sel:'.sport:nth-of-type(2)',url:'CRICKET_SHEET_CSV_URL'},
+  {sel:'.sport:nth-of-type(3)',url:'BASKETBALL_SHEET_CSV_URL'},
+  {sel:'.sport:nth-of-type(4)',url:'FOOTBALL_SHEET_CSV_URL'}
 ];
 
-async function loadSportMatches(s) {
-  const res = await fetch(s.url);
-  const data = parseCSV(await res.text());
-  const c = document.querySelector(s.selector);
-  const up = c.querySelector('.upcoming-matches');
-  const prev = c.querySelector('.previous-matches');
-  const now = new Date();
+async function loadSportMatches(s){
+  const res=await fetch(s.url);
+  const data=parseCSV(await res.text());
+  const c=document.querySelector(s.sel);
+  const up=c.querySelector('.upcoming-matches');
+  const prev=c.querySelector('.previous-matches');
+  const now=new Date();
 
-  const liveCards = [];
-  const upcomingCards = [];
-  const previousCards = [];
+  const live=[], upcoming=[], previous=[];
 
-  data.forEach(m => {
-    const matchDate = new Date(`${m.date}T${m.time}:00`);
-    let cls = '';
-    let status = '';
-
-    if (m.winner) {
-      cls = 'previous';
-    } else if (matchDate <= now) {
-      cls = 'live';
-      status = '<span class="live-text">LIVE</span>';
+  data.forEach(m=>{
+    const t=new Date(`${m.date}T${m.time}`);
+    let cls='',tag='';
+    if(m.winner){
+      cls='previous';
+    }else if(t<=now){
+      cls='live'; tag='<span class="live-text">LIVE</span>';
     }
-
-    const card = `
+    const card=`
       <div class="card ${cls}">
-        <div><strong>${m.team_a} vs ${m.team_b}</strong>${status}</div>
-        <div class="muted">${m.date} • ${m.time} • ${m.location || '-'}</div>
-        ${m.winner ? `<div class="muted">Winner: ${m.winner}</div>` : ''}
+        <strong>${m.team_a} vs ${m.team_b}</strong>${tag}
+        <div class="muted">${m.date} • ${m.time} • ${m.location||'-'}</div>
+        ${m.winner?`<div class="muted">Winner: ${m.winner}</div>`:''}
       </div>`;
-
-    if (cls === 'live') liveCards.push(card);
-    else if (cls === 'previous') previousCards.push(card);
-    else upcomingCards.push(card);
+    if(cls==='live') live.push(card);
+    else if(cls==='previous') previous.push(card);
+    else upcoming.push(card);
   });
 
-  let html = '';
-  if (liveCards.length) {
-    html += '<strong>LIVE Matches</strong><div class="divider"></div>';
-    html += liveCards.join('');
-    html += '<div class="divider"></div>';
+  let html='';
+  if(live.length){
+    html+='<strong>LIVE Matches</strong><div class="divider"></div>'+live.join('')+'<div class="divider"></div>';
   }
-  html += '<strong>Upcoming Matches</strong><div class="divider"></div>';
-  html += upcomingCards.join('');
-  up.innerHTML = html;
-
-  prev.innerHTML =
-    '<strong>Previous Matches</strong><div class="divider"></div>' +
-    previousCards.join('');
+  html+='<strong>Upcoming Matches</strong><div class="divider"></div>'+upcoming.join('');
+  up.innerHTML=html;
+  prev.innerHTML='<strong>Previous Matches</strong><div class="divider"></div>'+previous.join('');
 }
 
 sportsData.forEach(loadSportMatches);
 setInterval(()=>sportsData.forEach(loadSportMatches),60000);
 </script>
-
 </body>
 </html>
