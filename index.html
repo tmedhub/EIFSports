@@ -34,8 +34,10 @@ header h1 {
   font-weight: 900;
   font-size: 18px;
   margin: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
-  width: 100%;
 }
 header .logo {
   position: absolute;
@@ -80,7 +82,7 @@ h2 {
   justify-content: center;
   gap: 12px;
   margin-top: 18px;
-  margin-bottom: 24px; /* added space below countdown */
+  margin-bottom: 24px; /* space between countdown and matches */
 }
 .flip-unit {
   background: linear-gradient(180deg, #2a2a2a, #000);
@@ -104,7 +106,9 @@ h2 {
   text-align: center;
   font-size: 12px;
   opacity: 0.5;
-  margin: 8px 0 12px;
+  margin: 12px 0 12px;
+  position: relative;
+  top: -10px; /* move hint slightly above */
 }
 .goal {
   position: fixed;
@@ -214,7 +218,7 @@ document.addEventListener('touchend', e => {
 
 const sportsMatches = [
   {
-    selector: '.sport:nth-of-type(1)', // Dodgeball
+    selector: '.sport:nth-of-type(1)',
     matches: [
       { date: '2026-02-02', time: '12:45', team_a: 'Team1', team_b: 'Team2', winner: '', location: 'Dharmaram basketball court' },
       { date: '2026-02-02', time: '12:45', team_a: 'Team3', team_b: 'Team4', winner: '', location: 'Dharmaram basketball court' },
@@ -223,22 +227,16 @@ const sportsMatches = [
     ]
   },
   {
-    selector: '.sport:nth-of-type(2)', // Cricket
-    matches: [
-      { date: 'TBD', time: 'TBD', team_a: 'TBD', team_b: 'TBD', winner: '', location: 'TBD' }
-    ]
+    selector: '.sport:nth-of-type(2)',
+    matches: [{ date: 'TBD', time: 'TBD', team_a: 'TBD', team_b: 'TBD', winner: '', location: 'TBD' }]
   },
   {
-    selector: '.sport:nth-of-type(3)', // Basketball
-    matches: [
-      { date: 'TBD', time: 'TBD', team_a: 'TBD', team_b: 'TBD', winner: '', location: 'TBD' }
-    ]
+    selector: '.sport:nth-of-type(3)',
+    matches: [{ date: 'TBD', time: 'TBD', team_a: 'TBD', team_b: 'TBD', winner: '', location: 'TBD' }]
   },
   {
-    selector: '.sport:nth-of-type(4)', // Football
-    matches: [
-      { date: 'TBD', time: 'TBD', team_a: 'TBD', team_b: 'TBD', winner: '', location: 'TBD' }
-    ]
+    selector: '.sport:nth-of-type(4)',
+    matches: [{ date: 'TBD', time: 'TBD', team_a: 'TBD', team_b: 'TBD', winner: '', location: 'TBD' }]
   }
 ];
 
@@ -257,9 +255,8 @@ function loadMatches() {
       let status = '';
       let matchDate = m.date !== 'TBD' ? new Date(`${m.date}T${m.time}:00`) : null;
 
-      if (m.winner) {
-        cls = 'previous';
-      } else if (matchDate && matchDate <= now) {
+      if (m.winner) cls = 'previous';
+      else if (matchDate && matchDate <= now) {
         cls = 'live';
         status = '<span class="live-text">LIVE</span>';
       }
