@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>EIF Sports Tournament</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
   <style>
     :root {
@@ -24,33 +24,26 @@
       overflow-x: hidden;
     }
 
-header {
-  position: relative;
-  height: 60px; /* adjust as needed */
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-  display: flex;
-  align-items: center; /* vertically center logo and heading */
-  padding: 0 16px;
-  color: #fff;
-}
+    /* ===== HEADER ===== */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 60px;
+      padding: 0 16px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
 
-header .logo {
-  height: 42px;
-  position: absolute; /* pinned top-left */
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-}
+    header .logo {
+      height: 32px; /* smaller logo */
+    }
 
-header h1 {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 900;
-  text-align: center;
-  width: 100%;
-}
-
-
+    header h1 {
+      font-size: 18px;
+      font-weight: 900;
+      margin: 0;
+      color: #fff;
+    }
 
     /* ===== HORIZONTAL SWIPE ===== */
     .slider {
@@ -61,8 +54,9 @@ header h1 {
 
     .sport {
       width: 100vw;
-      min-height: calc(100vh - 72px);
+      min-height: calc(100vh - 60px);
       padding: 16px;
+      overflow-y: auto;
     }
 
     h2 {
@@ -107,40 +101,7 @@ header h1 {
       margin: 12px 0;
     }
 
-    /* ===== PROBABILITY BAR ===== */
-    .prob {
-      margin-top: 10px;
-    }
-
-    .bar {
-      height: 8px;
-      background: #3f2a14;
-      border-radius: 6px;
-      overflow: hidden;
-    }
-
-    .fill {
-      height: 100%;
-      width: 89%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-    }
-
-    /* ===== SCORECARD ===== */
-    .table {
-      width: 100%;
-      font-size: 13px;
-      border-collapse: collapse;
-    }
-
-    .table th, .table td {
-      padding: 6px 4px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      text-align: right;
-    }
-
-    .table th:first-child, .table td:first-child { text-align: left; }
-
-        /* ===== FLIP COUNTDOWN (COMING SOON STYLE) ===== */
+    /* ===== FLIP COUNTDOWN ===== */
     .flip {
       display: flex;
       justify-content: center;
@@ -152,13 +113,13 @@ header h1 {
       background: linear-gradient(180deg, #2a2a2a, #000);
       border-radius: 12px;
       padding: 14px 12px 10px;
-      min-width: 70px;
+      min-width: 60px;
       box-shadow: inset 0 -3px 0 rgba(0,0,0,0.6);
       text-align: center;
     }
 
     .flip-num {
-      font-size: 36px;
+      font-size: 28px;
       font-weight: 900;
       color: var(--accent);
       line-height: 1;
@@ -179,7 +140,7 @@ header h1 {
       margin: 8px 0 12px;
     }
 
-    /* ===== GOAL ANIMATION (FOOTBALL ONLY) ===== */
+    /* ===== GOAL ANIMATION ===== */
     .goal {
       position: fixed;
       inset: 0;
@@ -205,61 +166,22 @@ header h1 {
 <body>
 
 <header>
-  <img src="logo.png" alt="EIF Logo" style="height:42px;">
+  <img src="logo.png" alt="EIF Logo" class="logo">
   <h1>EMS Sports Tournament</h1>
 </header>
 
-
 <div class="slider" id="slider">
 
-    <!-- DODGEBALL -->
+  <!-- DODGEBALL -->
   <section class="sport">
     <h2>🤾 Dodgeball</h2>
     <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
-
-    <!-- COUNTDOWN ONLY -->
     <div class="flip" data-start="2026-02-02T12:45:00"></div>
 
-        <!-- UPCOMING MATCHES -->
-    <div class="card">
+    <!-- UPCOMING MATCHES -->
+    <div class="card upcoming-matches">
       <strong>Upcoming Matches</strong>
       <div class="divider"></div>
-
-      <div class="card" style="margin-bottom:10px">
-        <div class="row">
-          <strong>Team1</strong>
-          <span class="muted">vs</span>
-          <strong>Team2</strong>
-        </div>
-        <div class="muted">02 Feb • 12:45 • Court A</div>
-      </div>
-
-      <div class="card" style="margin-bottom:10px">
-        <div class="row">
-          <strong>Team3</strong>
-          <span class="muted">vs</span>
-          <strong>Team4</strong>
-        </div>
-        <div class="muted">02 Feb • 12:45 • Court A</div>
-      </div>
-
-      <div class="card" style="margin-bottom:10px">
-        <div class="row">
-          <strong>Team1</strong>
-          <span class="muted">vs</span>
-          <strong>Team4</strong>
-        </div>
-        <div class="muted">02 Feb • 13:10 • Court A</div>
-      </div>
-
-      <div class="card">
-        <div class="row">
-          <strong>Team2</strong>
-          <span class="muted">vs</span>
-          <strong>Team3</strong>
-        </div>
-        <div class="muted">02 Feb • 13:10 • Court A</div>
-      </div>
     </div>
 
     <!-- PREVIOUS MATCHES -->
@@ -273,7 +195,7 @@ header h1 {
   <!-- CRICKET -->
   <section class="sport">
     <h2>🏏 Cricket <span class="live">LIVE</span></h2>
-    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div> <span class="live">LIVE</span></h2>
+    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
 
     <div class="card">
       <div class="row">
@@ -304,7 +226,7 @@ header h1 {
   <!-- FOOTBALL -->
   <section class="sport">
     <h2>⚽ Football <span class="live">LIVE</span></h2>
-    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div> <span class="live">LIVE</span></h2>
+    <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
     <div class="card">
       <div class="score">2 – 1</div>
       <div class="muted">EIF FC vs Thunder United • 67'</div>
@@ -346,7 +268,6 @@ function initCountdowns() {
     setInterval(tick, 1000);
   });
 }
-
 initCountdowns();
 
 /**********************
@@ -361,7 +282,7 @@ document.addEventListener('touchend', e => {
   const diff = e.changedTouches[0].clientX - startX;
   if (diff < -50) index++;
   if (diff > 50) index--;
-  index = (index + 4) % 4;
+  index = Math.max(0, Math.min(index, 3));
   slider.style.transform = `translateX(-${index * 100}vw)`;
 });
 
@@ -375,6 +296,63 @@ function showGoal() {
   document.body.appendChild(g);
   setTimeout(() => g.remove(), 1000);
 }
+
+/**********************
+ GOOGLE SHEET DYNAMIC MATCHES
+**********************/
+async function loadMatchesForSport(sportName, containerSelector) {
+  const SHEET_ID = "2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j"; // Replace with your sheet ID 
+  const url = `https://docs.google.com/spreadsheets/d/1wFS6VwfOscijYAVNjg_GXbdH16Y2-teZU8ZxsXNbfao/edit?usp=sharing';
+
+  try {
+    const res = await fetch(url);
+    const text = await res.text();
+    const json = JSON.parse(text.substr(47).slice(0, -2));
+    const rows = json.table.rows;
+
+    const matches = rows.map(r => ({
+      team1: r.c[0]?.v || "",
+      team2: r.c[1]?.v || "",
+      date: r.c[2]?.v || "",
+      time: r.c[3]?.v || "",
+      location: r.c[4]?.v || ""
+    }));
+
+    const container = document.querySelector(containerSelector);
+    container.innerHTML = '<strong>Upcoming Matches</strong><div class="divider"></div>';
+    container.innerHTML += matches.map(m => `
+      <div class="card" style="margin-bottom:10px">
+        <div class="row">
+          <strong>${m.team1}</strong>
+          <span class="muted">vs</span>
+          <strong>${m.team2}</strong>
+        </div>
+        <div class="muted">${m.date} • ${m.time} • ${m.location}</div>
+      </div>
+    `).join('');
+  } catch (err) {
+    console.error(`Failed to load ${sportName} matches:`, err);
+  }
+}
+
+// Load all sports
+loadMatchesForSport("Dodgeball", ".sport:nth-child(1) .upcoming-matches");
+loadMatchesForSport("Cricket", ".sport:nth-child(2) .upcoming-matches");
+loadMatchesForSport("Basketball", ".sport:nth-child(3) .upcoming-matches");
+loadMatchesForSport("Football", ".sport:nth-child(4) .upcoming-matches");
+
+// Optional: refresh every 1 minute
+setInterval(() => {
+  loadMatchesForSport("Dodgeball", ".sport:nth-child(1) .upcoming-matches");
+  loadMatchesForSport("Cricket", ".sport:nth-child(2) .upcoming-matches");
+  loadMatchesForSport("Basketball", ".sport:nth-child(3) .upcoming-matches");
+  loadMatchesForSport("Football", ".sport:nth-child(4) .upcoming-matches");
+}, 60000);
+
+
+// Initial load + refresh every 1 minute
+loadMatches();
+setInterval(loadMatches, 60000);
 </script>
 
 </body>
