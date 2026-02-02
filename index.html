@@ -24,17 +24,25 @@ body {
 header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center; /* Centers the h1 */
+  position: relative;      /* Needed for logo positioning */
   height: 60px;
   padding: 0 16px;
   background: linear-gradient(90deg, var(--accent), var(--accent2));
 }
-header .logo { height: 32px; }
 header h1 {
-  font-size: 18px;
+  color: #000;            /* Black text */
   font-weight: 900;
+  font-size: 18px;
+  position: absolute;     /* Keeps it centered */
+  left: 50%;
+  transform: translateX(-50%);
   margin: 0;
-  color: #fff;
+}
+header .logo {
+  position: absolute;     /* Top-left logo */
+  left: 16px;
+  height: 32px;
 }
 .slider {
   display: flex;
@@ -226,11 +234,11 @@ const sportsData = [
 
 function parseCSV(text){
   const lines=text.trim().split('\n');
-  const headers=lines.shift().split(',');
+  const headers=lines.shift().split(',').map(h=>h.trim());
   return lines.map(line=>{
     const values=line.split(',');
     let obj={};
-    headers.forEach((h,i)=>obj[h.trim()]=values[i]?.trim());
+    headers.forEach((h,i)=>obj[h]=values[i]?.trim() || '');
     return obj;
   });
 }
@@ -245,13 +253,13 @@ async function loadSportMatches(sport){
     container.innerHTML+=data.map(m=>`
       <div class="card" style="margin-bottom:10px">
         <div class="row">
-      <strong>${m['team_a']}</strong>
-      <span class="muted">vs</span>
-      <strong>${m['team_b']}</strong>
-    </div>
-    <div class="muted">${m['date']} • ${m['time']} • ${m['location']}</div>
-  </div>
-`).join('');
+          <strong>${m[Object.keys(m)[0]]}</strong>
+          <span class="muted">vs</span>
+          <strong>${m[Object.keys(m)[1]]}</strong>
+        </div>
+        <div class="muted">${m[Object.keys(m)[2]]} • ${m[Object.keys(m)[3]]} • ${m[Object.keys(m)[4]]}</div>
+      </div>
+    `).join('');
   }catch(err){
     console.error(`Failed to load ${sport.name}:`,err);
   }
