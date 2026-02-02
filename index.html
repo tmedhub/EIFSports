@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>EIF Sports Tournament</title>
+<title>EMS Sports Tournament</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <style>
@@ -24,23 +24,23 @@ body {
 header {
   display: flex;
   align-items: center;
-  justify-content: center; /* Centers the h1 */
-  position: relative;      /* Needed for logo positioning */
+  justify-content: center;
+  position: relative;
   height: 60px;
   padding: 0 16px;
   background: linear-gradient(90deg, var(--accent), var(--accent2));
 }
 header h1 {
-  color: #000;            /* Black text */
+  color: #000;
   font-weight: 900;
   font-size: 18px;
-  position: absolute;     /* Keeps it centered */
+  position: absolute;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
 }
 header .logo {
-  position: absolute;     /* Top-left logo */
+  position: absolute;
   left: 16px;
   height: 32px;
 }
@@ -68,14 +68,9 @@ h2 {
   padding: 14px;
   margin-bottom: 12px;
 }
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-}
-.score { font-size: 36px; font-weight: 900; color: var(--accent); }
-.muted { color: var(--muted); font-size: 13px; }
+.card.previous { opacity: 0.6; }
+.card.live { background: linear-gradient(90deg, var(--accent), var(--accent2)); color: #000; }
+.muted { color: var(--muted); font-size: 13px; margin-top: 4px; }
 .divider { height: 1px; background: rgba(255,255,255,0.08); margin: 12px 0; }
 .flip {
   display: flex;
@@ -134,7 +129,7 @@ h2 {
 <body>
 
 <header>
-  <img src="logo.png" alt="EIF Logo" class="logo">
+  <img src="logo.png" alt="EMS Logo" class="logo">
   <h1>EMS Sports Tournament</h1>
 </header>
 
@@ -145,7 +140,8 @@ h2 {
     <h2>🤾 Dodgeball</h2>
     <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
     <div class="flip" data-start="2026-02-02T12:45:00"></div>
-    <div class="card upcoming-matches"></div>
+    <div class="upcoming-matches"></div>
+    <div class="previous-matches" style="margin-top:16px;"></div>
   </section>
 
   <!-- CRICKET -->
@@ -153,7 +149,8 @@ h2 {
     <h2>🏏 Cricket <span class="live">LIVE</span></h2>
     <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
     <div class="flip" data-start="2026-02-02T12:45:00"></div>
-    <div class="card upcoming-matches"></div>
+    <div class="upcoming-matches"></div>
+    <div class="previous-matches" style="margin-top:16px;"></div>
   </section>
 
   <!-- BASKETBALL -->
@@ -161,7 +158,8 @@ h2 {
     <h2>🏀 Basketball</h2>
     <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
     <div class="flip" data-start="2026-02-03T21:00:00"></div>
-    <div class="card upcoming-matches"></div>
+    <div class="upcoming-matches"></div>
+    <div class="previous-matches" style="margin-top:16px;"></div>
   </section>
 
   <!-- FOOTBALL -->
@@ -169,7 +167,8 @@ h2 {
     <h2>⚽ Football <span class="live">LIVE</span></h2>
     <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
     <div class="flip" data-start="2026-02-03T15:00:00"></div>
-    <div class="card upcoming-matches"></div>
+    <div class="upcoming-matches"></div>
+    <div class="previous-matches" style="margin-top:16px;"></div>
   </section>
 
 </div>
@@ -226,42 +225,59 @@ function showGoal(){
 
 /************ CSV FETCH FOR EACH SPORT ************/
 const sportsData = [
-  {name:'Dodgeball', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=0&single=true&output=csv', selector:'.sport:nth-of-type(1) .upcoming-matches'},
-  {name:'Cricket', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=513380808&single=true&output=csv', selector:'.sport:nth-of-type(2) .upcoming-matches'},
-  {name:'Basketball', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=1100929575&single=true&output=csv', selector:'.sport:nth-of-type(3) .upcoming-matches'},
-  {name:'Football', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=180472724&single=true&output=csv', selector:'.sport:nth-of-type(4) .upcoming-matches'}
+  {name:'Dodgeball', url:'YOUR_DODGEBALL_CSV_URL', selector:'.sport:nth-of-type(1)'},
+  {name:'Cricket', url:'YOUR_CRICKET_CSV_URL', selector:'.sport:nth-of-type(2)'},
+  {name:'Basketball', url:'YOUR_BASKETBALL_CSV_URL', selector:'.sport:nth-of-type(3)'},
+  {name:'Football', url:'YOUR_FOOTBALL_CSV_URL', selector:'.sport:nth-of-type(4)'}
 ];
 
 function parseCSV(text){
-  const lines=text.trim().split('\n');
-  const headers=lines.shift().split(',').map(h=>h.trim());
-  return lines.map(line=>{
-    const values=line.split(',');
-    let obj={};
-    headers.forEach((h,i)=>obj[h]=values[i]?.trim() || '');
+  const lines = text.trim().split('\n');
+  const headers = lines.shift().split(',').map(h => h.trim());
+  return lines.map(line => {
+    const values = line.split(',');
+    let obj = {};
+    headers.forEach((h,i) => obj[h] = values[i]?.trim() || '');
     return obj;
   });
 }
 
 async function loadSportMatches(sport){
   try{
-    const res=await fetch(sport.url);
-    const text=await res.text();
-    const data=parseCSV(text);
-    const container=document.querySelector(sport.selector);
-    container.innerHTML='<strong>Upcoming Matches</strong><div class="divider"></div>';
-    container.innerHTML+=data.map(m=>`
-      <div class="card" style="margin-bottom:10px">
-        <div class="row">
-          <strong>${m[Object.keys(m)[0]]}</strong>
-          <span class="muted">vs</span>
-          <strong>${m[Object.keys(m)[1]]}</strong>
+    const res = await fetch(sport.url);
+    const text = await res.text();
+    const data = parseCSV(text);
+    const container = document.querySelector(sport.selector);
+    const upcomingContainer = container.querySelector('.upcoming-matches');
+    const previousContainer = container.querySelector('.previous-matches');
+
+    upcomingContainer.innerHTML = '<strong>Upcoming Matches</strong><div class="divider"></div>';
+    previousContainer.innerHTML = '<strong>Previous Matches</strong><div class="divider"></div>';
+
+    const now = new Date();
+
+    data.forEach(m => {
+      const matchDate = new Date(`${m.date}T${m.time}:00`);
+      let cardClass = '';
+      if(matchDate <= now && m.score_a && m.score_b) cardClass = 'previous'; // past match with scores
+      if(matchDate <= now && (!m.score_a && !m.score_b)) cardClass = 'live'; // live match
+
+      const html = `
+        <div class="card ${cardClass}">
+          <div><strong>${m.team_a} vs ${m.team_b}</strong></div>
+          <div class="muted">${m.date} • ${m.time} • ${m.location || '-'}</div>
         </div>
-        <div class="muted">${m[Object.keys(m)[2]]} • ${m[Object.keys(m)[3]]} • ${m[Object.keys(m)[4]]}</div>
-      </div>
-    `).join('');
-  }catch(err){
-    console.error(`Failed to load ${sport.name}:`,err);
+      `;
+
+      if(matchDate > now){
+        upcomingContainer.innerHTML += html;
+      } else {
+        previousContainer.innerHTML += html;
+      }
+    });
+
+  } catch(err){
+    console.error(`Failed to load ${sport.name}:`, err);
   }
 }
 
