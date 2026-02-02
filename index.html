@@ -147,7 +147,7 @@ h2 {
   <section class="sport">
     <h2>🏏 Cricket</h2>
     <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
-    <div class="flip" data-start="2026-02-02T12:45:00"></div>
+    <div class="flip" data-start=""></div>
     <div class="upcoming-matches"></div>
     <div class="previous-matches" style="margin-top:16px;"></div>
   </section>
@@ -155,7 +155,7 @@ h2 {
   <section class="sport">
     <h2>🏀 Basketball</h2>
     <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
-    <div class="flip" data-start="2026-02-03T21:00:00"></div>
+    <div class="flip" data-start=""></div>
     <div class="upcoming-matches"></div>
     <div class="previous-matches" style="margin-top:16px;"></div>
   </section>
@@ -163,7 +163,7 @@ h2 {
   <section class="sport">
     <h2>⚽ Football</h2>
     <div class="muted" style="text-align:center;margin-bottom:6px">Next match in…</div>
-    <div class="flip" data-start="2026-02-03T15:00:00"></div>
+    <div class="flip" data-start=""></div>
     <div class="upcoming-matches"></div>
     <div class="previous-matches" style="margin-top:16px;"></div>
   </section>
@@ -175,7 +175,12 @@ h2 {
 <script>
 function initCountdowns() {
   document.querySelectorAll('.flip').forEach(el => {
-    const start = new Date(el.dataset.start).getTime();
+    const startStr = el.dataset.start;
+    if(!startStr) {
+      el.innerHTML = '<div class="flip-unit"><div class="flip-num">--</div><div class="flip-label">DAYS</div></div><div class="flip-unit"><div class="flip-num">--</div><div class="flip-label">HOURS</div></div><div class="flip-unit"><div class="flip-num">--</div><div class="flip-label">MINUTES</div></div><div class="flip-unit"><div class="flip-num">--</div><div class="flip-label">SECONDS</div></div>';
+      return;
+    }
+    const start = new Date(startStr).getTime();
     function tick() {
       let diff = Math.max(0, start - Date.now());
       const d = Math.floor(diff / 86400000);
@@ -207,61 +212,73 @@ document.addEventListener('touchend', e => {
   slider.style.transform = `translateX(-${index * 100}vw)`;
 });
 
-function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  const headers = lines.shift().split(',').map(h => h.trim());
-  return lines.map(l => {
-    const v = l.split(',');
-    let o = {};
-    headers.forEach((h,i)=>o[h]=v[i]?.trim()||'');
-    return o;
-  });
-}
-
-const sportsData = [
-   { selector:'.sport:nth-of-type(1)', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=0&single=true&output=csv' },
-  { selector:'.sport:nth-of-type(2)', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=513380808&single=true&output=csv' },
-  { selector:'.sport:nth-of-type(3)', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=1100929575&single=true&output=csv' },
-  { selector:'.sport:nth-of-type(4)', url:'https://docs.google.com/spreadsheets/d/e/2PACX-1vQorLqitwUIn1uAWjY9_PKhwRglRW2WlulAuf7kpTG1GN0Z8NKtQombFcU9FkqEUX9ub-z0_rj0hE8j/pub?gid=180472724&single=true&output=csv' }
+const sportsMatches = [
+  {
+    selector: '.sport:nth-of-type(1)', // Dodgeball
+    matches: [
+      { date: '2026-02-02', time: '12:45', team_a: 'Team1', team_b: 'Team2', winner: '', location: 'Dharmaram basketball court' },
+      { date: '2026-02-02', time: '12:45', team_a: 'Team3', team_b: 'Team4', winner: '', location: 'Dharmaram basketball court' },
+      { date: '2026-02-02', time: '13:10', team_a: 'Team1', team_b: 'Team4', winner: '', location: 'Dharmaram basketball court' },
+      { date: '2026-02-02', time: '13:10', team_a: 'Team2', team_b: 'Team3', winner: '', location: 'Dharmaram basketball court' }
+    ]
+  },
+  {
+    selector: '.sport:nth-of-type(2)', // Cricket
+    matches: [
+      { date: 'TBD', time: 'TBD', team_a: 'TBD', team_b: 'TBD', winner: '', location: 'TBD' }
+    ]
+  },
+  {
+    selector: '.sport:nth-of-type(3)', // Basketball
+    matches: [
+      { date: 'TBD', time: 'TBD', team_a: 'TBD', team_b: 'TBD', winner: '', location: 'TBD' }
+    ]
+  },
+  {
+    selector: '.sport:nth-of-type(4)', // Football
+    matches: [
+      { date: 'TBD', time: 'TBD', team_a: 'TBD', team_b: 'TBD', winner: '', location: 'TBD' }
+    ]
+  }
 ];
 
-async function loadSportMatches(s) {
-  const res = await fetch(s.url);
-  const data = parseCSV(await res.text());
-  const c = document.querySelector(s.selector);
-  const up = c.querySelector('.upcoming-matches');
-  const prev = c.querySelector('.previous-matches');
-  up.innerHTML = '<strong>Upcoming Matches</strong><div class="divider"></div>';
-  prev.innerHTML = '<strong>Previous Matches</strong><div class="divider"></div>';
-
+function loadMatches() {
   const now = new Date();
 
-  data.forEach(m => {
-    const matchDate = new Date(`${m.date}T${m.time}:00`);
-    let cls = '';
-    let status = '';
+  sportsMatches.forEach(s => {
+    const container = document.querySelector(s.selector);
+    const up = container.querySelector('.upcoming-matches');
+    const prev = container.querySelector('.previous-matches');
+    up.innerHTML = '<strong>Upcoming Matches</strong><div class="divider"></div>';
+    prev.innerHTML = '<strong>Previous Matches</strong><div class="divider"></div>';
 
-    if (m.winner) {
-      cls = 'previous';
-    } else if (matchDate <= now) {
-      cls = 'live';
-      status = '<span class="live-text">LIVE</span>';
-    }
+    s.matches.forEach(m => {
+      let cls = '';
+      let status = '';
+      let matchDate = m.date !== 'TBD' ? new Date(`${m.date}T${m.time}:00`) : null;
 
-    const card = `
-      <div class="card ${cls}">
-        <div><strong>${m.team_a} vs ${m.team_b}</strong>${status}</div>
-        <div class="muted">${m.date} • ${m.time} • ${m.location || '-'}</div>
-        ${m.winner ? `<div class="muted">Winner: ${m.winner}</div>` : ''}
-      </div>`;
+      if (m.winner) {
+        cls = 'previous';
+      } else if (matchDate && matchDate <= now) {
+        cls = 'live';
+        status = '<span class="live-text">LIVE</span>';
+      }
 
-    if (m.winner) prev.innerHTML += card;
-    else up.innerHTML += card;
+      const card = `
+        <div class="card ${cls}">
+          <div><strong>${m.team_a} vs ${m.team_b}</strong>${status}</div>
+          <div class="muted">${m.date} • ${m.time} • ${m.location}</div>
+          ${m.winner ? `<div class="muted">Winner: ${m.winner}</div>` : ''}
+        </div>`;
+
+      if (m.winner) prev.innerHTML += card;
+      else up.innerHTML += card;
+    });
   });
 }
 
-sportsData.forEach(loadSportMatches);
-setInterval(()=>sportsData.forEach(loadSportMatches),60000);
+loadMatches();
+setInterval(loadMatches, 60000);
 </script>
 
 </body>
